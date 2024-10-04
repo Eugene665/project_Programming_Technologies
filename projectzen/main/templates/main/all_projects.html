@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    <h1>Страница посвещана проектам, которые есть на нашей платформе</h1>
+    {% for el in projects %}
+    <div>
+        <h3>{{ el.title }}</h3>
+        <p> {{ el.description }}</p>
+    </div>
+
+    {% endfor %}
+{% endblock %}
+
