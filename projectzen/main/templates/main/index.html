@@ -5,6 +5,26 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Главная страница</h1>
-{% endblock %}
+    <h1>Главная страница проекта</h1>
 
+    <!-- Форма для заполнения информации о проекте -->
+    <form action="/submit_project" method="post" enctype="multipart/form-data">
+        <label for="project-title">Название проекта:</label><br>
+        <input type="text" id="project-title" name="project-title" placeholder="Введите название проекта" required><br><br>
+
+        <label for="project-description">Описание проекта:</label><br>
+        <textarea id="project-description" name="project-description" rows="4" placeholder="Введите описание проекта" required></textarea><br><br>
+
+        <!-- Минимальный конструктор для добавления текста, фото и видео -->
+        <label for="project-content">Добавить текст:</label><br>
+        <textarea id="project-content" name="project-content" rows="6" placeholder="Введите основной текст проекта"></textarea><br><br>
+
+        <label for="project-image">Добавить фото:</label><br>
+        <input type="file" id="project-image" name="project-image" accept="image/*"><br><br>
+
+        <label for="project-video">Добавить видео:</label><br>
+        <input type="file" id="project-video" name="project-video" accept="video/*"><br><br>
+
+        <button type="submit">Сохранить проект</button>
+    </form>
+{% endblock %}
