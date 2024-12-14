@@ -6,7 +6,7 @@ from .serializers import UserSerializers
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 @api_view(['POST'])
 def login(request):
@@ -15,7 +15,10 @@ def login(request):
         return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)
     token, created = Token.objects.get_or_create(user=user)
     serializer = UserSerializers(isinstance=user)
-    return Response({"token": token.key, "user": serializer.data})
+    if user.role == 'user':
+        return redirect('all_projects')
+    else:
+        return redirect('index')
 
 @api_view(['POST'])
 def signup(request):
@@ -26,6 +29,10 @@ def signup(request):
         user.set_password(request.data['password'])
         user.save()
         token = Token.objects.create(user=user)
+        if request.data['role'] == 'user':
+            return redirect('all_projects')
+        else:
+            return redirect('index')
         return Response({"token": token.key, "user": serializer.data})
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -40,6 +47,17 @@ from rest_framework.permissions import IsAuthenticated
 @permission_classes([IsAuthenticated])
 def test_token(request):
     return Response("passed for {}".format(request.user.email))
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+       # Get the token associated with the user
+   try:
+       token = Token.objects.get(user=request.user)
+       token.delete()  # Delete the token to log the user out
+       return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+   except Token.DoesNotExist:
+       return Response({"detail": "Token not found."}, status=status.HTTP_400_BAD_REQUEST)
 
 def index(request):
     return render(request, 'main/index.html')

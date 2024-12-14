@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/test-token/', views.test_token, name='test_token'),
     path('login/', views.login_page, name='login_page'),
     path('signup/', views.signup_page, name='signup_page'),
+    path('logout/', views.logout, name='logout'),
 ]
