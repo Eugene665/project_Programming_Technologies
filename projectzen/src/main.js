@@ -17,7 +17,7 @@ const logout = () => {
   isAuthenticated.value = false;
   user.value = {};
   localStorage.removeItem("userLogin");
-  router.push("/auth");
+  router.push("/login");
 };
 
 app.provide("isAuthenticated", isAuthenticated);
